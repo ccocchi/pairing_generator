@@ -121,7 +121,7 @@ class Tournament
     end
 
     res       = Hash.new
-    groups    = results.group_by { |_, v| v }.transform_values { |vs| vs.map(&:first) }.to_a # .sort! { |(v1, _),(v2, _)| v2 <=> v1 }
+    groups    = results.group_by { |_, v| v }.each_with_object({}) { |(k, vs), h| h[k] = vs.map(&:first) }.to_a
     overflow  = []
 
     groups.each do |_, values|
