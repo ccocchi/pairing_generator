@@ -125,10 +125,12 @@ class Tournament
     overflow  = []
 
     groups.each do |_, values|
-      vs = values + overflow
-      overflow = []
+      o_splayers, o_wplayers  = overflow.partition { |v| spirit_pool.include?(v) }
+      splayers, wplayers      = values.partition { |v| spirit_pool.include?(v) }.map!(&:shuffle!)
 
-      splayers, wplayers = vs.partition { |v| spirit_pool.include?(v) }.map(&:shuffle!)
+      splayers.unshift(*o_splayers)
+      wplayers.unshift(*o_wplayers)
+      overflow = []
 
       while (splayer = splayers.pop) do
         i       = 0
