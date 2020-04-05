@@ -121,10 +121,10 @@ class Tournament
     end
 
     res       = Hash.new
-    groups    = results.group_by { |_, v| v }.each_with_object({}) { |(k, vs), h| h[k] = vs.map(&:first) }.to_a
+    groups    = results.group_by { |_, v| v }.sort { |(v1, _), (v2, _)| v2 <=> v1 }.map! { |_, vs| vs.map!(&:first) }
     overflow  = []
 
-    groups.each do |_, values|
+    groups.each do |values|
       o_splayers, o_wplayers  = overflow.partition  { |v| spirit_pool.include?(v) }
       splayers, wplayers      = values.partition    { |v| spirit_pool.include?(v) }.map!(&:shuffle!)
 
